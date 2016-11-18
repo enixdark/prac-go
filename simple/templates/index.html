@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Homepage</h1>
+    {{range .}}
+        <div><a href="/page/{{.Guid}}">{{.Title}}</a></div>
+        <div>{{.Content}}</div>
+        <div>{{.Date}}</div>
+
+
+    {{end}}
+
+
+</body>
+
+</html>

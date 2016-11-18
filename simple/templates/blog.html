@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>{{.Title}}</title>
+</head>
+<body>
+
+{{ if .Session.Unauthenticated}}
+
+
+    <a href="/register">Register</a>
+    <a href="/login">Login</a>
+{{ else }}
+
+    <h1>{{.Title}}</h1>
+    <p>
+    {{.Content}}
+    </p>
+    <div>{{.Date}}</div>
+    {{ range .Comments}}
+    <div class="comment">
+        <div>Comment by {{.Name}} ({{.Email}}</div>
+        {{.CommentText}}
+        <div class="comment_edit">
+            <h3>Edit</h3>
+            <form class="form_edit" onsubmit="return putComment(this);">
+                <input type="hidden" class="edit_id" value="{{.Id}}"/>
+                <input type="text" class="edit_name" placeholder="Your name" value="{{.Name}}" />
+                <input type="text" name="email" class="edit_email" placeholder="Your Email" value="{{.Email}}" />
+                <textarea class="edit_comments" name="comments">{{.CommentText}}</textarea>
+                <input type="submit" value="Edit" />
+            </form>
+        </div>
+    </div>
+
+    {{ end }}
+    <div id="comments">
+        <form action="/api/comments" method="POST">
+            <input type="hidden" name="id" value="{{.Id}}" />
+            <input type="hidden" name="guid" value="{{.Guid}}" />
+            <div>
+                <input type="text" name="name" placeholder="Your Name" />
+            </div>
+            <div>
+                <input type="email" name="email" placeholder="Your Email" />
+            </div>
+            <div>
+            <textarea name="comments" placeholder="Your Comments"></textarea>
+            </div>
+            <div>
+                <input type="submit" value="Add Comments" />
+            </div>
+        </form>
+    </div>
+
+{{ end }}
+</body>
+<script>
+    $('h3').onclick(function () {
+        $('.form_edit').hide()
+    })
+    function putComment(el) {
+        var id = $(el).find('.edit_id');
+        var name = $(el).find('.edit_name').val();
+        var email = $(el).find('.edit_email').val();
+        var text = $(el).find('.edit_comments').val();
+        $.ajax({
+            url: '/api/comments/' + id,
+            type: 'PUT',
+            succes: function(res) {
+                alert('Comment Updated!');
+            }
+        });
+        return false;
+    }
+</script>
+</html>

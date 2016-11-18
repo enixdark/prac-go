@@ -1,0 +1,26 @@
+version: '2'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.6.5-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file: ./environments/.rabbitmq_env
+#    logging:
+#       driver: fluentd
+#       options:
+#         tag: "docker.{{.Name }}"
+#  mysql:
+#      container_name: mysql
+#      image: mysql:5.7.15
+#      ports:
+#        - "3306:3306"
+#      env_file: ./environments/.mysql_env
+#      volumes:
+#        - /tmp/mysql:/var/lib/mysql
+#      logging:
+#         driver: fluentd
+#         options:
+#           tag: "docker.{{.Name }}"
+
