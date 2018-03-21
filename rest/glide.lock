@@ -1,6 +1,20 @@
-hash: 59bc2913df061ea5872b3d4f0041b1ad213f0272648f86a906dbe1dde0902fdb
-updated: 2018-03-22T03:13:21.789188453+07:00
+hash: 2974373f69d5534e0bfb5823ed7d4c13af1e22136640fb2eb8d6c0e0e736d6a5
+updated: 2018-03-22T03:59:07.094060109+07:00
 imports:
+- name: github.com/enixdark/prac-go
+  version: 390ce76d720526f81f4dc092c696a51bee3e2325
+  subpackages:
+  - rest/src/lib/configuration
+  - rest/src/lib/persistence
+  - rest/src/lib/persistence/dblayer
+  - rest/src/lib/persistence/mongolayer
 - name: github.com/gorilla/mux
   version: 53c1911da2b537f792e7cafcb446b05ffe33b996
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  subpackages:
+  - bson
+  - internal/json
+  - internal/sasl
+  - internal/scram
 testImports: []
