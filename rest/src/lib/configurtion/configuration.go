@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/enixdark/prac-go/rest/src/eventsservice/lib/persistence/dblayer"
+	"github.com/enixdark/prac-go/rest/src/lib/persistence/dblayer"
 )
 
 var (

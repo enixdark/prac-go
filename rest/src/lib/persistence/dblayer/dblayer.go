@@ -1,8 +1,8 @@
 package dblayer
 
 import (
-	"github.com/enixdark/prac-go/rest/src/eventsservice/lib/persistence"
-	"github.com/enixdark/prac-go/rest/src/eventsservice/lib/persistence/mongolayer"
+	"github.com/enixdark/prac-go/rest/src/lib/persistence"
+	"github.com/enixdark/prac-go/rest/src/lib/persistence/mongolayer"
 )
 
 type DBTYPE string

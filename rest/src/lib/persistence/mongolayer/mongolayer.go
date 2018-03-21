@@ -1,7 +1,7 @@
 package mongolayer
 
 import (
-	"github.com/enixdark/prac-go/rest/src/eventsservice/lib/persistence"
+	"github.com/enixdark/prac-go/rest/src/lib/persistence"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
