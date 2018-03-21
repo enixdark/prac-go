@@ -45,16 +45,16 @@ func (mgoLayer *MongoDBLayer) FindEvent(id []byte) (persistence.Event, error) {
 	s := mgoLayer.getFreshSession()
 	defer s.Close()
 
-	e := persistence.Event()
+	e := persistence.Event{}
 
 	err := s.DB(DB).C(EVENTS).FindId(bson.ObjectId(id)).One(&e)
 }
 
 func (mgoLayer *MongoDBLayer) FindEventByName(name string) (persistence.Event, error) {
-	s := mongolayer.getFreshSession()
+	s := mgoLayer.getFreshSession()
 	defer s.Close()
 
-	e := persistence.Event()
+	e := persistence.Event{}
 
 	err := s.DB(DB).C(EVENTS).Find(bson.M{"name": name}).One(&e)
 	return e, err
