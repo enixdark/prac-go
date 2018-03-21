@@ -48,19 +48,17 @@ func (eh *eventServiceHandler) FindEventHandler(w http.ResponseWriter, r* http.R
 
 	switch strings.ToLower(criteria) {
 	case "name":
-		event, err := eh.dbhandler.FindEventByName(searchKey)
+		event, err = eh.dbhandler.FindEventByName(searchkey)
 	case "id":
-		id, err := hex.DecodeString(searchKey)
+		id, err := hex.DecodeString(searchkey)
 		if err == nil {
-			event, err := eh.dbhandler.FindEvent(id)
+			event, err = eh.dbhandler.FindEvent(id)
 		}
 	}
-
 	if err != nil {
 		fmt.Fprintf(w, `{"error": "%s"}`, err)
 		return
 	}
-
 	w.Header().Set("Content-Type", "application/json;charset=utf8")
 	json.NewEncoder(w).Encode(&event)
 }
