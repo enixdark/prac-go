@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/enixdark/prac-go/rest/src/eventsservice/rest"
-	"github.com/enixdark/prac-go/rest/src/eventsservice/lib/configuration"
-	"github.com/enixdark/prac-go/rest/src/eventsservice/lib/persistence/dblayer"
+	"github.com/enixdark/prac-go/rest/src/rest"
+	"github.com/enixdark/prac-go/rest/src/lib/configuration"
+	"github.com/enixdark/prac-go/rest/src/lib/persistence/dblayer"
 )
 
 func main() {
