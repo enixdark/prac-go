@@ -22,7 +22,7 @@ type MongoDBLayer struct {
 func NewMongoDBLayer(connection string) (persistence.DatabaseHandler, error) {
 	s, err := mgo.Dial(connection)
 	return &MongoDBLayer{
-		session: s
+		session: s,
 	}, err
 }
 

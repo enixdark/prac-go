@@ -18,7 +18,7 @@ type eventServiceHandler struct {
 
 func NewEventHandler(databaseHandler persistence.DatabaseHandler) *eventServiceHandler {
 	return &eventServiceHandler{
-		dbhandler: databaseHandler
+		dbhandler: databaseHandler,
 	}
 }
 
@@ -66,7 +66,6 @@ func (eh *eventServiceHandler) FindEventHandler(w http.ResponseWriter, r* http.R
 }
 
 func (eh *eventServiceHandler) AllEventHandler(w http.ResponseWriter, r *http.Request) {
-	events, err := eh.dbhandler.FindAllAvailbleEvents()
 	events, err := eh.dbhandler.FindAllAvailableEvents()
 	if err != nil {
 		w.WriteHeader(500)
