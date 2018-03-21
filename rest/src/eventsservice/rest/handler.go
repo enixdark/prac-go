@@ -34,7 +34,7 @@ func (eh *eventServiceHandler) FindEventHandler(w http.ResponseWriter, r* http.R
         return
 	}
 
-	searchKey, ok := vars["search"]
+	searchkey, ok := vars["search"]
 	if !ok {
 		w.WriteHeader(400)
 		fmt.Fprint(w, `{"error": "No search keys found, you can either search
