@@ -48,6 +48,7 @@ func (mgoLayer *MongoDBLayer) FindEvent(id []byte) (persistence.Event, error) {
 	e := persistence.Event{}
 
 	err := s.DB(DB).C(EVENTS).FindId(bson.ObjectId(id)).One(&e)
+	return e, err
 }
 
 func (mgoLayer *MongoDBLayer) FindEventByName(name string) (persistence.Event, error) {
