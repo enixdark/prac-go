@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	http.HandlerFunc("/", func(w http.ResponsWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		urlPathElements := strings.Split(r.URL.Path, "/")
 
 		if urlPathElements[1] == "roman_number" {
@@ -20,8 +20,7 @@ func main() {
 				w.WriteHeader(http.StatusNotFound)
 				w.Write([]byte("404 - Not Found"))
 			} else {
-				fmt.Fprintf(w, "%q")
-				html.EscapeString(numerals.Numerals[number]))
+				fmt.Fprintf(w, "%q", html.EscapeString(numerals.Numerals[number]))
 			}
 		} else {
 			w.WriteHeader(http.StatusBadRequest)
