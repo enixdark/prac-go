@@ -81,20 +81,24 @@ func getFileContent(w http.ResponseWriter, r *http.Request, params httprouter.Pa
 	fmt.Fprintf(w, getCommandOutput("/bin/cat", params.ByName("name")))
 }
 
+func randomFloat(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	fmt.Fprintln(w, rand.Float64())
+}
+
+func randomInt(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	fmt.Fprintln(w, rand.Int())
+}
+
 func main() {
 	router := httprouter.New()
 
-
+    router.ServeFiles("/static/*filepath", http.Dir("../static"))
 	router.GET("/api/v1/go-version", goVersion)
     router.GET("/api/v1/show-file/:name", getFileContent)
 
-	router.GET("/randomFloat", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		fmt.Fprintln(w, rand.Float64())
-	})
+	router.GET("/randomFloat", randomFloat)
 
-	router.GET("/randomInt", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		fmt.Fprintln(w, rand.Int())
-	})
+	router.GET("/randomInt", randomInt)
 
 	log.Fatal(http.ListenAndServe(":8000", router))
 
