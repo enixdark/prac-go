@@ -65,8 +65,8 @@ func main() {
 	
 	router := mux.NewRouter()
 
-	// router.ServeFiles("/static/*filepath", http.Dir("../static"))
-	
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/",
+		                          http.FileServer(http.Dir("../static"))))
 	router.HandleFunc("/articles/{category}/{id:[0-9]+}", ArticleHandler)
 	router.HandleFunc("/api/v1/go-version", goVersion)
     router.HandleFunc("/api/v1/show-file/{name}", getFileContent)
