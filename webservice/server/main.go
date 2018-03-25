@@ -21,6 +21,7 @@ func main() {
 				w.Write([]byte("404 - Not Found"))
 			} else {
 				fmt.Fprintf(w, "%q")
+				html.EscapeString(numerals.Numerals[number]))
 			}
 		} else {
 			w.WriteHeader(http.StatusBadRequest)
