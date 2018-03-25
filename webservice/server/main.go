@@ -3,53 +3,23 @@ package main
 import (
 	"math/rand"
 	"fmt"
-	"github.com/enixdark/prac-go/webservice/numerals"
-	"html"
 	"net/http"
-	"strconv"
-	"strings"
 	"os/exec"
 	"bytes"
 	"log"
-	"github.com/julienschmidt/httprouter"
-	// "time"
+	"github.com/gorilla/mux"
+	"time"
 )
-
-type ServeMux struct {
-
-}
-
-func (p *ServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/" {
-		giveRandom(w, r)
-		return
-	}
-
-	http.NotFound(w, r)
-	return 
-}
 
 func giveRandom(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Your random number is: %f", rand.Float64())
 }
 
-
-
-func process_number(w http.ResponseWriter, r *http.Request) {
-	urlPathElements := strings.Split(r.URL.Path, "/")
-
-	if urlPathElements[1] == "roman_number" {
-		number, _ := strconv.Atoi(strings.TrimSpace(urlPathElements[2]))
-		if number == 0 || number > 10 {
-			w.WriteHeader(http.StatusNotFound)
-			w.Write([]byte("404 - Not Found"))
-		} else {
-			fmt.Fprintf(w, "%q", html.EscapeString(numerals.Numerals[number]))
-		}
-	} else {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("400 - Bad request"))
-	}
+func ArticleHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Category is: %v\n", vars["category"])
+    fmt.Fprintf(w, "ID is: %v\n", vars["id"])
 }
 
 func getCommandOutput(command string, arguments ...string) string {
@@ -73,34 +43,45 @@ func getCommandOutput(command string, arguments ...string) string {
 	return out.String()
 }
 
-func goVersion(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func goVersion(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, getCommandOutput("go", "version"))
 }
 
-func getFileContent(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	fmt.Fprintf(w, getCommandOutput("/bin/cat", params.ByName("name")))
+func getFileContent(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	fmt.Fprintf(w, getCommandOutput("/bin/cat", vars["name"]))
 }
 
-func randomFloat(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func randomFloat(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, rand.Float64())
 }
 
-func randomInt(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func randomInt(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, rand.Int())
 }
 
 func main() {
-	router := httprouter.New()
 
-    router.ServeFiles("/static/*filepath", http.Dir("../static"))
-	router.GET("/api/v1/go-version", goVersion)
-    router.GET("/api/v1/show-file/:name", getFileContent)
+	
+	router := mux.NewRouter()
 
-	router.GET("/randomFloat", randomFloat)
+	// router.ServeFiles("/static/*filepath", http.Dir("../static"))
+	
+	router.HandleFunc("/articles/{category}/{id:[0-9]+}", ArticleHandler)
+	router.HandleFunc("/api/v1/go-version", goVersion)
+    router.HandleFunc("/api/v1/show-file/{name}", getFileContent)
+	router.HandleFunc("/randomFloat", randomFloat)
+	router.HandleFunc("/randomInt", randomInt)
 
-	router.GET("/randomInt", randomInt)
+	srv := &http.Server{
+		Handler: router,
+		Addr: "127.0.0.1:8000",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout: 15 * time.Second,
+	}
+	log.Fatal(srv.ListenAndServe())
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	
 
 }
 
