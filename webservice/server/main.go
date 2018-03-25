@@ -22,6 +22,14 @@ func ArticleHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "ID is: %v\n", vars["id"])
 }
 
+func QueryHandler(w http.ResponseWriter, r *http.Request){
+	queryParams := r.URL.Query()
+	w.WriteHeader(http.StatusOK)
+
+	fmt.Fprintf(w, "Got parameter id:%s!\n", queryParams["id"])
+    fmt.Fprintf(w, "Got parameter category:%s!", queryParams["category"])
+}
+
 func getCommandOutput(command string, arguments ...string) string {
 	cmd := exec.Command(command, arguments...)
 
@@ -64,9 +72,13 @@ func main() {
 
 	
 	router := mux.NewRouter()
-
+	// router.StrictSlash(true)
+	// router.UseEncodedPath()
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/",
-		                          http.FileServer(http.Dir("../static"))))
+								  http.FileServer(http.Dir("../static"))))
+								  
+	router.HandleFunc("/articles", QueryHandler)
+	router.Queries("id", "category")
 	router.HandleFunc("/articles/{category}/{id:[0-9]+}", ArticleHandler)
 	router.HandleFunc("/api/v1/go-version", goVersion)
     router.HandleFunc("/api/v1/show-file/{name}", getFileContent)
